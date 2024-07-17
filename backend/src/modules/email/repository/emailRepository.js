@@ -1,38 +1,71 @@
 const emailModel = require("../../../models/emailModel");
 const UserRepository = require("../../user/repository/userRepository");
 
-
 class EmailRepository {
+  constructor() {
+    this._userRepository = new UserRepository();
+  }
+  createEmail = async (sender, recipients, subject, body) => {
+    return await emailModel.create({
+      sender,
+      recipients,
+      subject,
+      body,
+      status: "sent",
+    });
+  };
 
-    constructor() {
-        this._userRepository = new UserRepository();
-    }
-    createEmail = async(sender, recipients, subject, body ) => {
-        try {
-            const senderExist = await this._userRepository.exist(sender);
-            if (!senderExist)
-                throw new Error("Sender does not exist");
-            return await emailModel.create({sender, recipients, subject, body, status: "sent"})
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    }
+  createDraft = async (sender, subject, body) => {
+    return await emailModel.create({ sender, subject, body });
+  };
 
-    createDraft = async(sender, subject, body) => {
-        return await emailModel.create({sender, subject, body})
-    }
+  getDrafts = async (id) => {
+    return await emailModel
+      .find({ sender: id, status: "draft" })
+      .populate({
+        path: "sender",
+        select: "email first_name last_name",
+      })
+      .populate({
+        path: "recipients",
+        select: "email first_name last_name _id",
+        model: "User",
+        localField: "recipients",
+        foreignField: "email",
+      });
+  };
 
-    getDrafts = async(id) => {
-        return await emailModel.find({sender: id, status: "draft"})
-    }
+  getReceivedEmails = async (id) => {
+    return await emailModel
+      .find({ recipients: id, status: "sent" })
+      .populate({
+        path: "sender",
+        select: "email first_name last_name",
+      })
+      .populate({
+        path: "recipients",
+        select: "email first_name last_name _id",
+        model: "User",
+        localField: "recipients",
+        foreignField: "email",
+      });
+  };
 
-    getReceivedEmails = async(id) => {
-        return await emailModel.find({recipients: id, status: "sent"}).populate("sender","email");
-    }
-
-    getSentEmails = async(id) => {
-        return await emailModel.find({sender: id, status: "sent"}).populate("recipients","email");
-    }
+  getSentEmails = async (id) => {
+    return await emailModel
+      .find({ sender: id, status: "sent" })
+      .populate({
+        path: "sender",
+        select: "email first_name last_name",
+      })
+      .populate({
+        path: "recipients",
+        select: "email first_name last_name _id",
+        model: "User",
+        localField: "recipients",
+        foreignField: "email",
+      });
+  };
 }
 
-module.exports = EmailRepository
+module.exports = EmailRepository;

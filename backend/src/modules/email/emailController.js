@@ -6,13 +6,13 @@ class EmailController {
   }
 
   sendEmail = async (req, res) => {
-    const { sender, recipients, subject, body } = req.body;
-    if (!sender || !recipients || !subject || !body)
+    const { recipients, subject, body } = req.body;
+    if (!recipients || !subject || !body)
       return res.status(400).json({ message: "All fields must be filled" });
 
     try {
       const email = await this._emailService.sendEmail(
-        sender,
+        req._id,
         recipients,
         subject,
         body
@@ -24,12 +24,12 @@ class EmailController {
   };
 
   saveDraft = async (req, res) => {
-    const { sender, subject, body } = req.body;
-    if (!sender || !subject || !body)
+    const {  subject, body } = req.body;
+    if (!subject || !body)
       return res.status(400).json({ message: "All fields must be filled" });
 
     try {
-      const email = await this._emailService.saveDraft(sender, subject, body);
+      const email = await this._emailService.saveDraft(req._id, subject, body);
       res.status(201).json(email);
     } catch (error) {
       res.status(400).json({ message: error.message });
@@ -37,11 +37,8 @@ class EmailController {
   };
 
   getDrafts = async (req, res) => {
-    const { id } = req.params;
-    if (!id)
-      return res.status(400).json({ message: "All fields must be filled" });
     try {
-      const email = await this._emailService.getDrafts(id);
+      const email = await this._emailService.getDrafts(req._id);
       res.status(201).json(email);
     } catch (error) {
       res.status(400).json({ message: error.message });
@@ -49,28 +46,22 @@ class EmailController {
   };
 
   getReceivedEmails = async (req, res) => {
-    const { id } = req.params;
-    if (!id)
-      return res.status(400).json({ message: "All fields must be filled" });
     try {
-      const email = await this._emailService.getReceivedEmails(id);
+      const email = await this._emailService.getReceivedEmails(req._id);
       res.status(201).json(email);
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
-  }
+  };
 
   getSentEmails = async (req, res) => {
-    const { id } = req.params;
-    if (!id)
-      return res.status(400).json({ message: "All fields must be filled" });
     try {
-      const email = await this._emailService.getSentEmails(id);
+      const email = await this._emailService.getSentEmails(req._id);
       res.status(201).json(email);
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
-  }
+  };
 }
 
 module.exports = EmailController;

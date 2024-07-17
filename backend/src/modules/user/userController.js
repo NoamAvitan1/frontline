@@ -52,6 +52,15 @@ class UserController {
       return res.status(400).json({ message: error.message });
     }
   };
+
+  stayLogin = async (req, res) => {
+    try {
+      const user = await this._userService.stayLogin(req._id);
+      res.status(200).json(user);
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
+    }
+  };
 }
 
 module.exports = UserController;

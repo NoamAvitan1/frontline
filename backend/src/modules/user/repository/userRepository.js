@@ -14,6 +14,9 @@ class UserRepository{
         return await userModel.exists(id)
     }
 
+    stayLogin = async(id) => {
+        return await userModel.findById(id)
+    }
 }
 
 
