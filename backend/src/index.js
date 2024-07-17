@@ -4,6 +4,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const userRoutes = require("./modules/user/userRoutes");
+const emailRoutes = require("./modules/email/emailRoutes");
 
 //import routes
 
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/api/user", userRoutes);
+app.use("/api/email", emailRoutes);
 
 //only if connection to db is successful then start the server
 connectDB(MONGO_URI)

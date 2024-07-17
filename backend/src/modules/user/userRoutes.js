@@ -6,6 +6,6 @@ const userController = new UserController();
 const route = express.Router();
 
 route.post("/signup", userController.signup);
-route.post("/login",authentication,userController.login);
+route.post("/login",userController.login);
 
 module.exports = route;
