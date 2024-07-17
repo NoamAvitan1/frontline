@@ -19,6 +19,7 @@ class EmailController {
       );
       res.status(201).json(email);
     } catch (error) {
+      console.log(error);
       res.status(400).json({ message: error.message });
     }
   };

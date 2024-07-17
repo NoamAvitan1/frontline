@@ -1,4 +1,5 @@
 const emailModel = require("../../../models/emailModel");
+const userModel = require("../../../models/userModel");
 const UserRepository = require("../../user/repository/userRepository");
 
 class EmailRepository {
@@ -6,13 +7,22 @@ class EmailRepository {
     this._userRepository = new UserRepository();
   }
   createEmail = async (sender, recipients, subject, body) => {
-    return await emailModel.create({
-      sender,
-      recipients,
-      subject,
-      body,
-      status: "sent",
-    });
+    try {
+      const users = await userModel.find({ email: { $in: recipients } });
+      console.log(users);
+      if (users.length !== recipients.length) {
+        throw new Error("One or more recipient emails do not exist.");
+      }
+      return await emailModel.create({
+        sender,
+        recipients,
+        subject,
+        body,
+        status: "sent",
+      });
+    } catch (error) {
+      throw error;
+    }
   };
 
   createDraft = async (sender, subject, body) => {
