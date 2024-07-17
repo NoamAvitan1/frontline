@@ -8,7 +8,7 @@ const EmailSchema = new mongoose.Schema(
       required: true,
     },
     recipients: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false },
+      { type:String, required: false },
     ],
     subject: { type: String, required: true },
     body: { type: String, required: true },
