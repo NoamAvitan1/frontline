@@ -10,6 +10,10 @@ class UserRepository{
         return await userModel.login(email, password);
     }
 
+    exist = async(id) => {
+        return await userModel.exists(id)
+    }
+
 }
 
 
