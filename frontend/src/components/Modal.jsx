@@ -45,6 +45,7 @@ export default function Modal({ isOpen, onClose }) {
     Api.post(`/email/${route}`, payload);
     onClose();
     alert(route === "send" ? "Email sent" : "Draft saved");
+    window.location.reload();
   };
 
   const handleCancel = () => {
