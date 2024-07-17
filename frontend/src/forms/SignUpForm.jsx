@@ -31,15 +31,13 @@ const SignUpForm = ({ setAuth }) => {
 
       setUserData(response.data); 
       navigate("/"); 
-
-      console.log("Signup successful:", response.data);
     } catch (error) {
       console.error("Signup failed:", error);
     }
   };
 
   return (
-    <div className="w-[500px] bg-white h-[590px] rounded-sm">
+    <div className="w-[450px] bg-white min-h-[580px] rounded-sm">
       <button onClick={() => setAuth("login")} className="text-2xl">
         <IoIosArrowRoundBack />
       </button>
