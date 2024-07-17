@@ -21,7 +21,8 @@ const LoginForm = ({setAuth}) => {
   };
 
   return (
-    <div className='w-[500px] bg-white h-[330px] rounded-sm'>
+    <div className='w-[300px] bg-white min-h-[360px] rounded-sm shadow-xl py-4'>
+      <h1 className='font-bold text-xl text-center'>Welcome</h1>
       <form className='text-foreground p-4 flex w-full flex-col justify-center gap-8' onSubmit={handleSubmit(onSubmit)}>
         <div className='flex flex-col gap-1'>
           <label className='font-bold'>Email</label>
