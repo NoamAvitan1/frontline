@@ -29,7 +29,7 @@ export default function Modal({ isOpen, onClose }) {
     setRecipients((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (route) => {
+  const handleSubmit = async (route) => {
     if (recipients.length === 0 && route !== "draft") {
       alert("Please enter at least one recipient");
       return;
@@ -42,10 +42,17 @@ export default function Modal({ isOpen, onClose }) {
       ...getValues(),
       recipients,
     };
-    Api.post(`/email/${route}`, payload);
-    onClose();
-    alert(route === "send" ? "Email sent" : "Draft saved");
-    window.location.reload();
+    try {
+      const { data } = await Api.post(`/email/${route}`, payload);
+      onClose();
+      alert(route === "send" ? "Email sent" : "Draft saved");
+      window.location.reload();
+    } catch (error) {
+      alert("One or more recipient emails do not exist.");
+      onClose();
+      window.location.reload();
+      return;
+    }
   };
 
   const handleCancel = () => {
