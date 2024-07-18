@@ -48,8 +48,10 @@ export default function Modal({ isOpen, onClose }) {
       alert(route === "send" ? "Email sent" : "Draft saved");
       window.location.reload();
     } catch (error) {
-      alert("One or more recipient emails do not exist.");
-      onClose();
+      if(route === 'sent'){
+        alert("One or more recipient do not exist.");
+        onClose();
+      }
       window.location.reload();
       return;
     }
