@@ -32,6 +32,7 @@ const SignUpForm = ({ setAuth }) => {
       setUserData(response.data); 
       navigate("/"); 
     } catch (error) {
+      alert("Signup failed due to a conflict");
       console.error("Signup failed:", error);
     }
   };

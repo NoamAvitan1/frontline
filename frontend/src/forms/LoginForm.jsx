@@ -16,6 +16,7 @@ const LoginForm = ({setAuth}) => {
       navigate('/')
       console.log('Login successful:', response.data);
     } catch (error) {
+      alert("Password or email is incorrect");
       console.error('Login failed:', error);
     }
   };

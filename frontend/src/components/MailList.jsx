@@ -13,7 +13,7 @@ export default function MailList({ mails }) {
   };
   return (
     <ul
-      className="min-w-[300px] pt-px  max-w-[400px] overflow-y-auto 
+      className="min-w-[300px] pt-px  max-w-[400px] overflow-y-auto  h-[calc(100dvh-100px)]
      border-r border-slate-700 "
     >
       {mails.map((mail) => (
