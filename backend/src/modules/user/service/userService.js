@@ -68,7 +68,10 @@ class UserService {
   };
 
   stayLogin = async(id) => {
-    return await this._userRepository.stayLogin(id)
+    let user = await this._userRepository.stayLogin(id)
+    user.password = "******"
+    user.refresh_token = "******"
+    return user;
   }
 }
 

@@ -15,11 +15,7 @@ export default function Home() {
     const getUser = async () => {
       try {
         const { data } = await Api.post("/user/staylogin");
-        if (Array.isArray(data) && data.length === 0) {
-          navigate("/auth");
-        } else {
-          setUserData(data);
-        }
+        setUserData(data);
       } catch (error) {
         navigate("/auth");
       }

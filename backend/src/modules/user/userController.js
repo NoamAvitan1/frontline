@@ -61,6 +61,26 @@ class UserController {
       return res.status(400).json({ message: error.message });
     }
   };
+
+  logOut = async (req, res) => {
+    try {
+      res.clearCookie("accessToken", {
+        httpOnly: true,
+        sameSite: "none",
+        maxAge: 15 * 60 * 1000,
+        secure: true,
+      });
+      res.clearCookie("refreshToken", {
+        httpOnly: true,
+        sameSite: "none",
+        maxAge: 60 * 60 * 1000,
+        secure: true,
+      });
+      res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  };
 }
 
 module.exports = UserController;

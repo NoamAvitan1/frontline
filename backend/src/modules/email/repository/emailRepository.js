@@ -8,8 +8,7 @@ class EmailRepository {
   }
   createEmail = async (sender, recipients, subject, body) => {
     try {
-      const users = await userModel.find({ email: { $in: recipients } });
-      console.log(users);
+      const users = await this._userRepository.findUser(recipients);
       if (users.length !== recipients.length) {
         throw new Error("One or more recipient emails do not exist.");
       }
@@ -25,13 +24,31 @@ class EmailRepository {
     }
   };
 
-  createDraft = async (sender, subject, body) => {
-    return await emailModel.create({ sender, subject, body });
+  createDraft = async (sender, subject, body, recipients) => {
+    const filter = {
+      sender,
+      subject,
+      body,
+    };
+    if (recipients) {
+      const users = await this._userRepository.findUser(recipients);
+      if (users.length !== recipients.length) {
+        throw new Error("One or more recipient emails do not exist.");
+      }
+      filter.recipients = recipients;
+    }
+    return await emailModel.create(filter);
   };
 
-  getDrafts = async (id) => {
+  getDrafts = async (id, query) => {
+    const filter = {};
+    filter.sender = id;
+    filter.status = "draft";
+    if (query) {
+      filter.subject = new RegExp(query, "i");
+    }
     return await emailModel
-      .find({ sender: id, status: "draft" })
+      .find(filter)
       .populate({
         path: "sender",
         select: "email first_name last_name",
@@ -45,9 +62,16 @@ class EmailRepository {
       });
   };
 
-  getReceivedEmails = async (id) => {
+  getReceivedEmails = async (id, query) => {
+    const filter = {};
+    filter.status = "sent";
+    if (query) {
+      filter.subject = new RegExp(query, "i");
+    }
+    const user = await userModel.findById(id, "email");
+    filter.recipients = user.email;
     return await emailModel
-      .find({ recipients: id, status: "sent" })
+      .find(filter)
       .populate({
         path: "sender",
         select: "email first_name last_name",
@@ -61,9 +85,15 @@ class EmailRepository {
       });
   };
 
-  getSentEmails = async (id) => {
+  getSentEmails = async (id, query) => {
+    const filter = {};
+    filter.sender = id;
+    filter.status = "sent";
+    if (query) {
+      filter.subject = new RegExp(query, "i");
+    }
     return await emailModel
-      .find({ sender: id, status: "sent" })
+      .find(filter)
       .populate({
         path: "sender",
         select: "email first_name last_name",
@@ -75,6 +105,18 @@ class EmailRepository {
         localField: "recipients",
         foreignField: "email",
       });
+  };
+
+  updateDraft = async (id, data) => {
+    const users = await this._userRepository.findUser(data.recipients);
+    if (users.length !== data.recipients.length) {
+      throw new Error("One or more recipient emails do not exist.");
+    }
+    return await emailModel.findByIdAndUpdate(
+      id,
+      { ...data, status: "sent" },
+      { new: true }
+    );
   };
 }
 

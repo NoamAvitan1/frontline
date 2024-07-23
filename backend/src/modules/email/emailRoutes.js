@@ -14,4 +14,5 @@ router.get(
   emailController.getReceivedEmails
 );
 router.get("/outbox", authentication, emailController.getSentEmails);
+router.put("/draft/:id", authentication, emailController.updateDraft);
 module.exports = router;

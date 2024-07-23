@@ -1,6 +1,5 @@
 import React from "react";
 import { getUserTag } from "../utils/getUserTag";
-import { MdMarkEmailUnread } from "react-icons/md";
 import { useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 

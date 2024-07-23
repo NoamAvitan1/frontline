@@ -43,12 +43,16 @@ export default function Modal({ isOpen, onClose }) {
       recipients,
     };
     try {
+      if((payload.subject === "" && payload.body === "") && route === 'draft'){
+        alert("Please enter subject or body");
+        return;
+      }
       const { data } = await Api.post(`/email/${route}`, payload);
       onClose();
       alert(route === "send" ? "Email sent" : "Draft saved");
       window.location.reload();
     } catch (error) {
-      if(route === 'sent'){
+      if (route === "send") {
         alert("One or more recipient do not exist.");
         onClose();
       }

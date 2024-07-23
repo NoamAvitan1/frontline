@@ -7,6 +7,9 @@ import { RiInbox2Line } from "react-icons/ri";
 import { TbLayoutBottombarCollapse } from "react-icons/tb";
 import { getUserTag } from "../utils/getUserTag";
 import Modal from "./Modal";
+import { LogOutButton } from "./LogOutButton";
+import { GenericModal } from "./GenericModal";
+import { GenericForm } from "./GenericForm";
 
 export default function NavBar() {
   const { userData } = useContext(UserContext);
@@ -47,18 +50,21 @@ export default function NavBar() {
         <Search />
         <section className="flex items-center space-x-2 ml-auto">
           <button
+          type="button"
             onClick={() => setOpen(true)}
             className="flex items-center gap-2 bg-blue-400 rounded-md text-white p-2"
           >
             <MdEmail />
             New Email
           </button>
-          <p className="bg-yellow-600 p-2 rounded-full">
-            {getUserTag(userData)}
-          </p>
+          <LogOutButton userData={userData} />
         </section>
       </header>
-      <Modal isOpen={open} onClose={() => setOpen(false)} />
+      <GenericModal
+        isOpen={open}
+        childern={<GenericForm onClose={() => setOpen(false)} />}
+      ></GenericModal>
+      {/* <Modal isOpen={open} onClose={() => setOpen(false)} /> */}
     </>
   );
 }

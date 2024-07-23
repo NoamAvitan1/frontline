@@ -17,6 +17,10 @@ class UserRepository{
     stayLogin = async(id) => {
         return await userModel.findById(id)
     }
+
+    findUser = async(recipients) => {
+        return await userModel.find({email: {$in: recipients}})
+    }
 }
 
 
