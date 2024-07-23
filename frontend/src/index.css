@@ -19,6 +19,10 @@ body{
     animation: tooltipAnimation 300ms forwards;
 }
 
+.tooltip-inner {
+    animation: tooltip-inner-animation 400ms forwards ease-out;
+}
+
 @keyframes tooltipAnimation{
     0%{
         opacity: 0;
@@ -27,6 +31,21 @@ body{
     100%{
         opacity: 1;
         transform: scale(1)
+    }
+}
+
+@keyframes tooltip-inner-animation {
+    0%{
+        opacity: 0;
+        transform: scale(0);
+    }
+    75%{
+        opacity: 1;
+        transform: scale(1.07)
+    }
+    100% {
+        opacity: 1,
+        scale(1);
     }
 }
 

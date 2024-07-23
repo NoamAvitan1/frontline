@@ -80,7 +80,11 @@ export const GenericForm = ({
       alert("Please enter at least one recipient");
       return;
     }
-    if (route === "draft" && !confirm("Save to draft?")) {
+    // if (route === "draft" && !confirm("Save to draft?")) {
+    //   onClose();
+    //   return;
+    // }
+    if (route === "draft") {
       onClose();
       return;
     }
@@ -115,7 +119,7 @@ export const GenericForm = ({
   };
 
   return (
-    <article className="max-w-[550px] container bg-white rounded-xl p-4">
+    <article className="w-[550px] container bg-white rounded-xl p-4">
       <header className="space-y-2">
         <section className="flex items-center border-b border-b-slate-400 pb-2 ">
           <div className="flex items-center justify-between grow">
